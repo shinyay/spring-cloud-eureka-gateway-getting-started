@@ -20,6 +20,8 @@ spring:
           uri: lb://discovery
           predicates:
             - Path=/eureka/**
+          filters:
+            - StripPrefix=1
 server:
   port: 8760
 eureka:
