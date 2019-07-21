@@ -1,1 +1,41 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: service
+          uri: lb://service
+          predicates:
+            - Path=/service/**
+          filters:
+            - StripPrefix=1
+        - id: discovery
+          uri: lb://discovery
+          predicates:
+            - Path=/discovery/**
+          filters:
+            - StripPrefix=1
+        - id: eureka
+          uri: lb://discovery
+          predicates:
+            - Path=/eureka/**
+server:
+  port: 8760
+eureka:
+  client:
+    register-with-eureka: true
+    service-url:
+      default-zone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+    healthcheck:
+      enabled: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - mappings
+          - env
+          - health
+          - info
